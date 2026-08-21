@@ -942,7 +942,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="mt-14 border-t border-white/10 pt-8 sm:mt-16"
+            className="mt-16 border-t border-white/10 pt-8"
           >
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <p className="text-sm text-white/30">
@@ -950,8 +950,7 @@ export default function Home() {
               </p>
 
               <p className="max-w-2xl text-left text-base leading-7 text-white/50 sm:text-lg md:text-right">
-                Learn the fundamentals → build projects → understand the
-                problems → improve the solution.
+                Learn the fundamentals → build real projects → understand meaningful problems → refine the solution.
               </p>
             </div>
           </motion.div>
