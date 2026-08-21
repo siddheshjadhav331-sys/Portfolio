@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Menu, X, Mail } from "lucide-react";
@@ -332,10 +332,13 @@ export default function Home() {
 
                 {/* Profile photo */}
                 <div className="relative h-48 w-48 overflow-hidden rounded-full border border-white/20">
-                  <img
-                    src="/profile/siddhesh.png"
+                  <Image
+                    src="/profile/Siddhesh.png"
                     alt="Siddhesh Jadhav"
+                    width = {192}
+                    height = {192}
                     className="h-full w-full object-cover"
+                    priority
                   />
                 </div>
               </div>
@@ -373,8 +376,8 @@ export default function Home() {
             </h2>
 
             <p className="mt-5 max-w-2xl text-lg leading-8 text-white/40">
-              A collection of projects where I combine development,
-              algorithms, AI, and user-focused design.
+              A collection of projects where code, algorithms, and thoughtful UI/UX 
+              come together to solve real-world problems.
             </p>
           </motion.div>
 
