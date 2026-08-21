@@ -398,7 +398,7 @@ export default function Home() {
             </p>
 
             <h2 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Things I&apos;ve built
+              Things I&apos;ve 
               <span className="text-white/30"> built.</span>
             </h2>
 
