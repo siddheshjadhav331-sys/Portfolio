@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -144,18 +145,23 @@ export default function Home() {
             <a href="#work" className="transition hover:text-white">
               Work
             </a>
+
             <a href="#about" className="transition hover:text-white">
               About
             </a>
+
             <a href="#skills" className="transition hover:text-white">
               Skills
             </a>
+
             <a href="#resume" className="transition hover:text-white">
               Resume
             </a>
+
             <a href="#contact" className="transition hover:text-white">
               Contact
             </a>
+
             <a
               href="#contact"
               className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:bg-white hover:text-black"
@@ -191,6 +197,7 @@ export default function Home() {
             >
               Work
             </a>
+
             <a
               href="#about"
               onClick={() => setMobileMenuOpen(false)}
@@ -198,6 +205,7 @@ export default function Home() {
             >
               About
             </a>
+
             <a
               href="#skills"
               onClick={() => setMobileMenuOpen(false)}
@@ -205,6 +213,7 @@ export default function Home() {
             >
               Skills
             </a>
+
             <a
               href="#resume"
               onClick={() => setMobileMenuOpen(false)}
@@ -212,6 +221,7 @@ export default function Home() {
             >
               Resume
             </a>
+
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
@@ -219,6 +229,7 @@ export default function Home() {
             >
               Contact
             </a>
+
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
@@ -284,6 +295,7 @@ export default function Home() {
                 className="group flex items-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-black transition hover:scale-105"
               >
                 View My Work
+
                 <ArrowUpRight
                   size={18}
                   className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -335,8 +347,8 @@ export default function Home() {
                   <Image
                     src="/profile/Siddhesh.png"
                     alt="Siddhesh Jadhav"
-                    width = {192}
-                    height = {192}
+                    width={192}
+                    height={192}
                     className="h-full w-full object-cover"
                     priority
                   />
@@ -344,13 +356,14 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Stationary Name and Title below photo */}
+            {/* Name and title */}
             <div className="relative z-10 mt-6 text-center">
-              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
                 Siddhesh Jadhav
               </h3>
-              <p className="mt-1 text-sm sm:text-base text-white/70">
-                Front-End Development & UI/UX Enthusiast
+
+              <p className="mt-1 text-sm text-white/70 sm:text-base">
+                Full-Stack Development & UI/UX Enthusiast
               </p>
             </div>
           </motion.div>
@@ -376,8 +389,8 @@ export default function Home() {
             </h2>
 
             <p className="mt-5 max-w-2xl text-lg leading-8 text-white/40">
-              A collection of projects where code, algorithms, and thoughtful UI/UX 
-              come together to solve real-world problems.
+              A collection of projects where code, algorithms, and thoughtful
+              UI/UX come together to solve real-world problems.
             </p>
           </motion.div>
 
@@ -423,6 +436,7 @@ export default function Home() {
                     alt="DSA Visualizer"
                     className="h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
                   />
+
                   <div className="absolute inset-0 bg-black/40 transition group-hover:bg-black/20" />
                 </div>
 
@@ -430,6 +444,7 @@ export default function Home() {
                   <span className="text-xs uppercase tracking-[0.2em] text-white/25">
                     Interactive Learning
                   </span>
+
                   <span className="text-xs text-white/20">DSA</span>
                 </div>
               </div>
@@ -469,6 +484,7 @@ export default function Home() {
                     className="group/button inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:scale-105"
                   >
                     Live Demo
+
                     <ArrowUpRight
                       size={16}
                       className="transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5"
@@ -528,6 +544,7 @@ export default function Home() {
                     alt="ATS Resume Analyzer"
                     className="h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
                   />
+
                   <div className="absolute inset-0 bg-black/40 transition group-hover:bg-black/20" />
                 </div>
 
@@ -535,6 +552,7 @@ export default function Home() {
                   <span className="text-xs uppercase tracking-[0.2em] text-white/25">
                     Resume Intelligence
                   </span>
+
                   <span className="text-xs text-white/20">ATS Score</span>
                 </div>
               </div>
@@ -572,6 +590,7 @@ export default function Home() {
                     className="group/button inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:scale-105"
                   >
                     Live Demo
+
                     <ArrowUpRight
                       size={16}
                       className="transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5"
@@ -684,7 +703,8 @@ export default function Home() {
 
                   <p className="mt-3 leading-7 text-white/40">
                     Exploring modern web development while strengthening my
-                    foundations in computer science.
+                    foundations in computer science and progressing toward
+                    full-stack development.
                   </p>
                 </div>
 
@@ -693,7 +713,7 @@ export default function Home() {
                     "Software Development",
                     "DSA",
                     "UI/UX",
-                    "Problem Solving",
+                    "Full-Stack Development",
                   ].map((item) => (
                     <span
                       key={item}
@@ -718,7 +738,9 @@ export default function Home() {
               My Journey
             </p>
 
-            <h3 className="mt-4 text-3xl font-bold">From learning to building.</h3>
+            <h3 className="mt-4 text-3xl font-bold">
+              From learning to building.
+            </h3>
 
             <div className="mt-12 border-t border-white/10">
               <JourneyItem
@@ -738,8 +760,8 @@ export default function Home() {
               <JourneyItem
                 number="03"
                 label="NEXT"
-                title="Becoming Better"
-                description="Deepening my development skills, solving harder problems, and creating better digital experiences."
+                title="Full-Stack Development"
+                description="Expanding into backend development, APIs, databases, and scalable software design while continuing to improve my frontend skills."
               />
             </div>
           </motion.div>
@@ -768,56 +790,57 @@ export default function Home() {
             </p>
           </motion.div>
 
+          {/* Skill Categories */}
           <div className="mt-16 grid gap-6 md:grid-cols-2">
             <SkillCategory
               number="01"
               title="Languages"
               description="Languages I use for programming, problem solving, and application development."
               skills={[
-                { name: "C", level: 75 },
-                { name: "C++", level: 80 },
-                { name: "Python", level: 75 },
-                { name: "JavaScript", level: 85 },
-                { name: "TypeScript", level: 70 },
+                { name: "C" },
+                { name: "C++" },
+                { name: "Python" },
+                { name: "JavaScript" },
+                { name: "TypeScript" },
               ]}
             />
 
             <SkillCategory
               number="02"
               title="Web Development"
-              description="Technologies I use to create modern and responsive web applications."
+              description="Technologies I use to build modern, responsive, and interactive web applications."
               skills={[
-                { name: "HTML", level: 90 },
-                { name: "CSS", level: 85 },
-                { name: "React", level: 80 },
-                { name: "Next.js", level: 70 },
-                { name: "Tailwind CSS", level: 80 },
+                { name: "HTML" },
+                { name: "CSS" },
+                { name: "React" },
+                { name: "Next.js" },
+                { name: "Tailwind CSS" },
               ]}
             />
 
             <SkillCategory
               number="03"
-              title="Computer Science"
-              description="Core concepts that form my technical foundation."
+              title="CS Fundamentals"
+              description="Core computer science concepts that form my technical foundation."
               skills={[
-                { name: "Data Structures", level: 85 },
-                { name: "Algorithms", level: 80 },
-                { name: "OOP", level: 80 },
-                { name: "DBMS", level: 70 },
-                { name: "Operating Systems", level: 65 },
+                { name: "Data Structures" },
+                { name: "Algorithms" },
+                { name: "OOP" },
+                { name: "DBMS" },
+                { name: "Operating Systems" },
               ]}
             />
 
             <SkillCategory
               number="04"
-              title="Design & Tools"
-              description="Tools and principles I use to design, prototype, and manage projects."
+              title="Tools & Design"
+              description="Tools and design principles I use to build, prototype, and manage projects."
               skills={[
-                { name: "Figma", level: 80 },
-                { name: "UI/UX", level: 80 },
-                { name: "Git", level: 75 },
-                { name: "GitHub", level: 80 },
-                { name: "VS Code", level: 90 },
+                { name: "Figma" },
+                { name: "UI/UX" },
+                { name: "Git" },
+                { name: "GitHub" },
+                { name: "VS Code" },
               ]}
             />
           </div>
@@ -836,23 +859,23 @@ export default function Home() {
                 </p>
 
                 <h3 className="mt-3 text-2xl font-semibold">
-                  Always improving.
+                  Building toward full-stack.
                 </h3>
 
                 <p className="mt-3 max-w-xl leading-7 text-white/40">
-                  I'm continuously expanding my technical skills and exploring
-                  technologies that help me build better products.
+                  I'm expanding my skills toward full-stack development, with a
+                  focus on backend technologies, APIs, databases, and scalable
+                  software design.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
                 {[
-                  "Advanced React",
-                  "Next.js",
                   "Node.js",
-                  "System Design",
                   "REST APIs",
-                  "Git & GitHub",
+                  "PostgreSQL",
+                  "Backend Development",
+                  "System Design",
                 ].map((skill, index) => (
                   <motion.span
                     key={skill}
@@ -908,7 +931,8 @@ export default function Home() {
               </p>
 
               <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
-                A little more<span className="text-white/30"> about my journey.</span>
+                A little more
+                <span className="text-white/30"> about my journey.</span>
               </h2>
 
               <p className="mt-6 max-w-xl text-lg leading-8 text-white/40">
@@ -924,6 +948,7 @@ export default function Home() {
                   className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-105"
                 >
                   View Resume
+
                   <ArrowUpRight
                     size={16}
                     className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -1070,9 +1095,13 @@ export default function Home() {
       {/* ================= FOOTER ================= */}
       <footer className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-4 px-6 py-8 text-sm text-white/30 md:flex-row">
-        <span className="font-semibold text-white/60">SJ.</span>
-        <span>Designed & built with Next.js</span>
-        <span>© {new Date().getFullYear()} Siddhesh Jadhav. All Rights Reserved.</span>
+          <span className="font-semibold text-white/60">SJ.</span>
+
+          <span>Designed & built with Next.js</span>
+
+          <span>
+            © {new Date().getFullYear()} Siddhesh Jadhav. All Rights Reserved.
+          </span>
         </div>
       </footer>
     </main>
@@ -1094,7 +1123,6 @@ function SkillCategory({
   description: string;
   skills: {
     name: string;
-    level: number;
   }[];
 }) {
   return (
@@ -1109,7 +1137,10 @@ function SkillCategory({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs text-white/25">{number}</p>
-          <h3 className="mt-3 text-2xl font-semibold">{title}</h3>
+
+          <h3 className="mt-3 text-2xl font-semibold">
+            {title}
+          </h3>
         </div>
 
         <span className="text-2xl text-white/10 transition group-hover:text-white/30">
@@ -1117,38 +1148,15 @@ function SkillCategory({
         </span>
       </div>
 
-      <p className="mt-4 leading-7 text-white/40">{description}</p>
-
-      <div className="mt-7 space-y-5">
-        {skills.map((skill) => (
-          <div key={skill.name}>
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm text-white/60">{skill.name}</span>
-              <span className="text-xs text-white/25">{skill.level}%</span>
-            </div>
-
-            <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: `${skill.level}%` }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 1,
-                  delay: 0.1,
-                  ease: "easeOut",
-                }}
-                className="h-full rounded-full bg-white/40"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+      <p className="mt-4 leading-7 text-white/40">
+        {description}
+      </p>
 
       <div className="mt-7 flex flex-wrap gap-2">
         {skills.map((skill) => (
           <span
             key={skill.name}
-            className="rounded-full bg-white/[0.04] px-3 py-1.5 text-xs text-white/35 transition hover:bg-white/[0.08] hover:text-white/70"
+            className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white/50 transition hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
           >
             {skill.name}
           </span>
@@ -1178,14 +1186,23 @@ function JourneyItem({
       whileHover={{ x: 6 }}
       className="grid gap-4 border-b border-white/10 py-8 md:grid-cols-[160px_1fr_auto] md:items-center"
     >
-      <p className="text-sm text-white/30">{label}</p>
+      <p className="text-sm text-white/30">
+        {label}
+      </p>
 
       <div>
-        <h4 className="text-xl font-semibold">{title}</h4>
-        <p className="mt-2 text-white/40">{description}</p>
+        <h4 className="text-xl font-semibold">
+          {title}
+        </h4>
+
+        <p className="mt-2 text-white/40">
+          {description}
+        </p>
       </div>
 
-      <span className="text-sm text-white/20">{number}</span>
+      <span className="text-sm text-white/20">
+        {number}
+      </span>
     </motion.div>
   );
 }
