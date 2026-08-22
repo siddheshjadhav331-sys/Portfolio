@@ -1,1259 +1,764 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Menu, X, Mail } from "lucide-react";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Download,
+  ExternalLink,
+  Mail,
+  Menu,
+  X,
+} from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
-export default function Home() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const projects = [
+  {
+    number: "01",
+    featured: true,
+    category: "Software Engineering · Interactive Learning",
+    title: "DSA Visualizer",
+    description:
+      "Interactive learning platform that visualizes data structures and algorithms through step-by-step execution and direct user interaction.",
+    image: "/projects/dsa_visualizer.png",
+    stack: ["React", "TypeScript", "Algorithms", "UI/UX"],
+    highlights: [
+      "Step-by-step algorithm visualization",
+      "Interactive data structure operations",
+      "Learning-focused interaction design",
+      "Responsive interface",
+    ],
+    live: "https://gutter-turtle-32541558.figma.site",
+    github: "https://github.com/siddheshjadhav331-sys/dsa-visualizer",
+  },
+  {
+    number: "02",
+    featured: false,
+    category: "Career Technology · NLP",
+    title: "ATS Resume Analyzer",
+    description:
+      "Full-stack resume analysis tool that evaluates content and provides ATS-focused feedback to improve clarity and recruiter readability.",
+    image: "/projects/ats_resumeanalyzer.png",
+    stack: ["React", "Django", "NLP", "REST APIs"],
+    highlights: [
+      "Resume content analysis",
+      "ATS-focused scoring",
+      "Actionable improvement suggestions",
+      "React + Django full stack",
+    ],
+    live: "https://ats-resume-analyzer-6ztl.onrender.com/",
+    github: "https://github.com/siddheshjadhav331-sys/ATS_Resume-Analyzer",
+  },
+];
 
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const cursorDotRef = useRef<HTMLDivElement>(null);
+const skillGroups = [
+  {
+    title: "Programming",
+    items: ["C", "C++", "Python", "JavaScript", "TypeScript"],
+  },
+  {
+    title: "Frontend",
+    items: ["React", "Next.js", "HTML", "CSS", "Tailwind CSS"],
+  },
+  {
+    title: "Backend & APIs",
+    items: ["Django", "Node.js", "REST APIs"],
+  },
+  {
+    title: "CS Fundamentals",
+    items: ["Data Structures", "Algorithms", "OOP", "DBMS", "Operating Systems"],
+  },
+  {
+    title: "Tools & Design",
+    items: ["Git", "GitHub", "Figma", "UI/UX", "VS Code"],
+  },
+];
 
-  /* ================= SCROLL PROGRESS ================= */
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (ticking) return;
-
-      window.requestAnimationFrame(() => {
-        const scrollTop = window.scrollY;
-
-        const documentHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-
-        const progress =
-          documentHeight > 0
-            ? (scrollTop / documentHeight) * 100
-            : 0;
-
-        setScrollProgress(progress);
-        ticking = false;
-      });
-
-      ticking = true;
-    };
-
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  /* ================= CUSTOM CURSOR ================= */
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      const { clientX, clientY } = event;
-
-      if (cursorRef.current) {
-        cursorRef.current.style.transform =
-          `translate3d(${clientX}px, ${clientY}px, 0) translate(-50%, -50%)`;
-      }
-
-      if (cursorDotRef.current) {
-        cursorDotRef.current.style.transform =
-          `translate3d(${clientX}px, ${clientY}px, 0) translate(-50%, -50%)`;
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, {
-      passive: true,
-    });
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+function FadeIn({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const reduceMotion = useReducedMotion();
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#0a0a0a] text-white">
-      {/* ================= SCROLL PROGRESS ================= */}
+    <motion.div
+      initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={reduceMotion ? undefined : { duration: 0.55, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function ProjectCard({
+  project,
+  index,
+}: {
+  project: (typeof projects)[number];
+  index: number;
+}) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.article
+      initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={reduceMotion ? undefined : { duration: 0.55, delay: index * 0.08 }}
+      whileHover={reduceMotion ? undefined : { y: -6 }}
+      className={`group overflow-hidden rounded-[1.75rem] border bg-white/[0.025] ${
+        project.featured
+          ? "border-white/20"
+          : "border-white/10 hover:border-white/20"
+      }`}
+    >
+      <div className="relative aspect-[16/9] overflow-hidden border-b border-white/10 bg-[#111]">
+        <Image
+          src={project.image}
+          alt={`${project.title} project preview`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px"
+          className="object-cover opacity-90 transition duration-700 ease-out group-hover:scale-[1.025] group-hover:opacity-100"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-transparent" />
+
+        <div className="absolute left-5 top-5 flex items-center gap-2">
+          <span className="rounded-full border border-white/15 bg-black/50 px-3 py-1.5 text-[11px] font-medium text-white/70 backdrop-blur-md">
+            {project.number}
+          </span>
+          {project.featured && (
+            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-black">
+              Featured
+            </span>
+          )}
+        </div>
+
+        <span className="absolute bottom-5 right-5 rounded-full border border-white/15 bg-black/50 px-3 py-1.5 text-[11px] text-white/60 backdrop-blur-md">
+          {project.category}
+        </span>
+      </div>
+
+      <div className="p-6 sm:p-8">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/35">
+          Project {project.number}
+        </p>
+
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+          {project.title}
+        </h3>
+
+        <p className="mt-4 max-w-2xl text-[15px] leading-7 text-white/50 sm:text-base">
+          {project.description}
+        </p>
+
+        <div className="mt-6 grid gap-2 sm:grid-cols-2">
+          {project.highlights.map((highlight) => (
+            <div
+              key={highlight}
+              className="rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2.5 text-sm text-white/55"
+            >
+              {highlight}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {project.stack.map((tech) => (
+            <span
+              key={tech}
+              className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/55"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <p className="mt-5 text-xs leading-6 text-white/35">
+          Built as a hands-on project with an emphasis on implementation,
+          usability, and practical problem solving.
+        </p>
+
+        <div className="mt-7 flex flex-wrap gap-3">
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open live demo for ${project.title}`}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+          >
+            Live Demo
+            <ArrowUpRight size={15} aria-hidden="true" />
+          </a>
+
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View source code for ${project.title} on GitHub`}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/12 px-5 py-2.5 text-sm text-white/70 transition hover:border-white/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+          >
+            GitHub
+            <FaGithub size={15} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    let frame = 0;
+
+    const onScroll = () => {
+      if (frame) return;
+
+      frame = window.requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        setScrollProgress(max > 0 ? (window.scrollY / max) * 100 : 0);
+        frame = 0;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const closeMenu = () => setMobileMenuOpen(false);
+
+  return (
+    <>
+      <a
+        href="#main-content"
+        className="sr-only z-[200] rounded-md bg-white px-4 py-2 text-sm font-semibold text-black focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to content
+      </a>
+      <main id="main-content" className="min-h-screen overflow-x-clip bg-[#080808] text-white selection:bg-white selection:text-black">
+      {/* Performance-friendly background */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(255,255,255,.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.5)_1px,transparent_1px)] [background-size:64px_64px]" />
+        <div className="absolute left-[8%] top-[10%] h-72 w-72 rounded-full bg-white/[0.025] blur-3xl sm:h-96 sm:w-96" />
+        <div className="absolute bottom-[5%] right-[5%] h-80 w-80 rounded-full bg-white/[0.018] blur-3xl sm:h-[28rem] sm:w-[28rem]" />
+      </div>
 
       <motion.div
         className="fixed left-0 top-0 z-[100] h-[2px] bg-white"
         style={{ width: `${scrollProgress}%` }}
       />
 
-      {/* ================= ANIMATED BACKGROUND ================= */}
-
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        {/* Grid */}
-        <div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        {/* Main glow */}
-        <motion.div
-          animate={{
-            x: [0, 80, -40, 0],
-            y: [0, -40, 60, 0],
-            scale: [1, 1.1, 0.95, 1],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute left-[15%] top-[15%] h-[300px] w-[300px] rounded-full bg-white/[0.025] blur-[90px] sm:h-[400px] sm:w-[400px]"
-        />
-
-        {/* Secondary glow */}
-        <motion.div
-          animate={{
-            x: [0, -70, 40, 0],
-            y: [0, 50, -30, 0],
-            scale: [1, 0.9, 1.08, 1],
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-[10%] right-[10%] h-[280px] w-[280px] rounded-full bg-white/[0.02] blur-[90px] sm:h-[350px] sm:w-[350px]"
-        />
-      </div>
-
-      {/* ================= CUSTOM CURSOR ================= */}
-
-      <div
-        ref={cursorRef}
-        className="pointer-events-none fixed left-0 top-0 z-[999] hidden h-8 w-8 rounded-full border border-white/30 md:block will-change-transform"
-      />
-
-      <div
-        ref={cursorDotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[998] hidden h-2 w-2 rounded-full bg-white md:block will-change-transform"
-      />
-
-      {/* ================= NAVBAR ================= */}
-
-      <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-xl">
+      <nav aria-label="Primary navigation" className="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-[#080808]/85 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6">
-          {/* Logo */}
           <a
             href="#home"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={closeMenu}
             className="text-xl font-bold tracking-tight"
+            aria-label="Siddhesh Jadhav home"
           >
-            SJ<span className="text-white/40">.</span>
+            SJ<span className="text-white/35">.</span>
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 text-sm text-white/60 md:flex">
-            <a href="#work" className="transition hover:text-white">
-              Work
-            </a>
-
-            <a href="#about" className="transition hover:text-white">
-              About
-            </a>
-
-            <a href="#skills" className="transition hover:text-white">
-              Skills
-            </a>
-
-            <a href="#resume" className="transition hover:text-white">
-              Resume
-            </a>
-
-            <a href="#contact" className="transition hover:text-white">
-              Contact
-            </a>
-
+          <div className="hidden items-center gap-7 text-sm text-white/55 md:flex">
+            <a href="#work" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">Work</a>
+            <a href="#skills" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">Skills</a>
+            <a href="#about" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">About</a>
+            <a href="#resume" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">Resume</a>
             <a
               href="#contact"
-              className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:bg-white hover:text-black"
+              className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
-              Let&apos; Talk
+              Let&apos;s Talk
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:border-white/30 hover:text-white md:hidden"
-            aria-label="Toggle navigation menu"
+            type="button"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/75 transition hover:border-white/30 md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        <motion.div
-          initial={false}
-          animate={{
-            height: mobileMenuOpen ? "auto" : 0,
-            opacity: mobileMenuOpen ? 1 : 0,
-          }}
-          className="overflow-hidden border-t border-white/10 bg-[#0a0a0a]/95 md:hidden"
-        >
-          <div className="flex flex-col px-5 py-5 sm:px-6">
-            <a
-              href="#work"
-              onClick={() => setMobileMenuOpen(false)}
-              className="border-b border-white/10 py-4 text-white/60 transition hover:text-white"
-            >
-              Work
-            </a>
-
-            <a
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="border-b border-white/10 py-4 text-white/60 transition hover:text-white"
-            >
-              About
-            </a>
-
-            <a
-              href="#skills"
-              onClick={() => setMobileMenuOpen(false)}
-              className="border-b border-white/10 py-4 text-white/60 transition hover:text-white"
-            >
-              Skills
-            </a>
-
-            <a
-              href="#resume"
-              onClick={() => setMobileMenuOpen(false)}
-              className="border-b border-white/10 py-4 text-white/60 transition hover:text-white"
-            >
-              Resume
-            </a>
-
+        {mobileMenuOpen && (
+          <div className="border-t border-white/8 bg-[#080808]/98 px-5 py-3 md:hidden">
+            {["work", "skills", "about", "resume", "contact"].map((item) => (
+              <a
+                key={item}
+                href={`#${item}`}
+                onClick={closeMenu}
+                className="block rounded-sm border-b border-white/8 py-4 text-sm capitalize text-white/75 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                {item}
+              </a>
+            ))}
             <a
               href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="border-b border-white/10 py-4 text-white/60 transition hover:text-white"
+              onClick={closeMenu}
+              className="mt-4 block rounded-full bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
             >
-              Contact
-            </a>
-
-            <a
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="mt-5 rounded-full bg-white px-5 py-3 text-center text-sm font-medium text-black"
-            >
-              Let&apos; Talk
+              Let&apos;s Talk
             </a>
           </div>
-        </motion.div>
+        )}
       </nav>
 
-      {/* ================= HERO ================= */}
-
-      <section
-        id="home"
-        className="relative flex min-h-screen items-center overflow-hidden"
-      >
-        <div className="relative mx-auto grid w-full max-w-6xl gap-12 px-5 py-28 sm:gap-16 sm:px-6 sm:py-32 md:grid-cols-2 md:items-center">
+      {/* Hero */}
+      <section id="home" className="relative flex min-h-[92svh] items-center pt-20">
+        <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:gap-16">
           <div>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-5 text-xs uppercase tracking-[0.25em] text-white/40 sm:mb-6 sm:text-sm sm:tracking-[0.3em]"
-            >
-              Computer Science Student
-            </motion.p>
+            <FadeIn>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.025] px-3.5 py-2 text-xs text-white/55">
+                <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
+                Computer Science Student · Software Developer
+              </div>
+            </FadeIn>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-7xl"
-            >
-              Building ideas
-              <br />
-              into <span className="text-white/40">experiences.</span>
-            </motion.h1>
+            <FadeIn delay={0.05}>
+              <h1 className="max-w-4xl text-[2.8rem] font-bold leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-[5.4rem]">
+                I build software
+                <br />
+                <span className="text-white/35">that solves problems.</span>
+              </h1>
+            </FadeIn>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.2,
-              }}
-              className="mt-6 max-w-xl text-base leading-7 text-white/50 sm:mt-7 sm:text-lg sm:leading-8"
-            >
-              I build interactive software experiences with a focus on
-              full-stack development, algorithms, and thoughtful UI/UX.
-            </motion.p>
+            <FadeIn delay={0.1}>
+              <p className="mt-7 max-w-2xl text-base leading-7 text-white/50 sm:text-lg sm:leading-8">
+                I build reliable, user-focused software with a strong foundation in
+                data structures & algorithms, full-stack development, and
+                modern web technologies.
+              </p>
+            </FadeIn>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.3,
-              }}
-              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
-            >
-              <a
-                href="#work"
-                className="group flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-black transition hover:scale-105"
-              >
-                View My Work
+            <FadeIn delay={0.15}>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#work"
+                  className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-black transition hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+                >
+                  View My Work
+                  <ArrowUpRight size={16} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                </a>
+                <a
+                  href="/resume/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/12 px-6 py-3.5 text-sm text-white/70 transition hover:border-white/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+                >
+                  View Resume
+                  <ExternalLink size={15} aria-hidden="true" />
+                </a>
+              </div>
+            </FadeIn>
 
-                <ArrowUpRight
-                  size={18}
-                  className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
-                />
-              </a>
-
-              <a
-                href="#contact"
-                className="flex items-center justify-center rounded-full border border-white/15 px-6 py-3 text-white/80 transition hover:border-white/40 hover:text-white"
-              >
-                Contact Me
-              </a>
-            </motion.div>
+            <FadeIn delay={0.2}>
+              <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-xs text-white/35 sm:text-sm">
+                <span>2+ Software Projects</span>
+                <span>Full-Stack</span>
+                <span>DSA</span>
+                <span>UI/UX</span>
+              </div>
+            </FadeIn>
           </div>
 
-          {/* Hero Visual */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative mx-auto flex h-[400px] w-full max-w-[450px] flex-col items-center justify-center p-5 sm:h-[460px] sm:p-6"
-          >
-            {/* Background Glass Panel */}
-            <div className="absolute inset-0 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl" />
-
-            {/* Floating Photo */}
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 2, 0],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="relative z-10"
-            >
-              <div className="relative flex h-48 w-48 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] shadow-2xl backdrop-blur-sm sm:h-56 sm:w-56">
-                {/* Outer Ring */}
-                <div className="absolute -inset-3 rounded-full border border-white/[0.06]" />
-
-                {/* Inner Ring */}
-                <div className="absolute inset-2 rounded-full border border-white/10" />
-
-                {/* Profile Photo */}
-                <div className="relative h-40 w-40 overflow-hidden rounded-full border border-white/20 sm:h-48 sm:w-48">
-                  <Image
-                    src="/profile/Siddhesh.png"
-                    alt="Siddhesh Jadhav"
-                    width={192}
-                    height={192}
-                    className="h-full w-full object-cover"
-                    priority
-                  />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Name and Title */}
-            <div className="relative z-10 mt-6 text-center">
-              <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                Siddhesh Jadhav
-              </h3>
-
-              <p className="mt-1 text-sm text-white/70 sm:text-base">
-                Full-Stack Development & UI/UX Enthusiast
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ================= PROJECTS ================= */}
-
-      <section id="work" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-white/30 sm:text-sm sm:tracking-[0.3em]">
-              Selected Work
-            </p>
-
-            <h2 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Things I&apos;ve 
-              <span className="text-white/30"> built.</span>
-            </h2>
-
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/40 sm:text-lg sm:leading-8">
-              A collection of projects where code, algorithms, and thoughtful
-              UI/UX come together to solve real-world problems.
-            </p>
-          </motion.div>
-
-          {/* Project Cards */}
-          <div className="mt-12 grid gap-8 sm:mt-16 md:grid-cols-2">
-            {/* PROJECT 01 */}
-            <motion.article
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              whileHover={{ y: -8 }}
-              className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] transition-all duration-500 hover:border-white/25 hover:bg-white/[0.04]"
-            >
-              {/* Preview */}
-              <div className="relative h-64 overflow-hidden sm:h-72 md:h-80">
-                <div
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                    backgroundSize: "35px 35px",
-                  }}
-                />
-
-                <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.035] blur-[80px]" />
-
-                <div className="absolute left-5 top-5 z-10 sm:left-6 sm:top-6">
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white/40 backdrop-blur">
-                    01
-                  </span>
-                </div>
-
-                <div className="absolute right-5 top-5 z-10 sm:right-6 sm:top-6">
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white/40 backdrop-blur">
-                    Featured
-                  </span>
-                </div>
-
-                <div className="absolute inset-0">
-                  <Image
-                    src="/projects/dsa_visualizer.png"
-                    alt="DSA Visualizer"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
-                  />
-
-                  <div className="absolute inset-0 bg-black/40 transition group-hover:bg-black/20" />
-                </div>
-
-                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between sm:bottom-6 sm:left-6 sm:right-6">
-                  <span className="text-[10px] uppercase tracking-[0.15em] text-white/25 sm:text-xs sm:tracking-[0.2em]">
-                    Interactive Learning
-                  </span>
-
-                  <span className="text-xs text-white/20">
-                    DSA
-                  </span>
-                </div>
+          <FadeIn delay={0.12} className="mx-auto w-full max-w-md">
+            <div className="relative rounded-[2rem] border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-black/30 sm:p-7">
+              <div className="absolute right-5 top-5 rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white/35">
+                Developer
               </div>
 
-              {/* Content */}
-              <div className="p-6 sm:p-8">
-                <p className="text-xs uppercase tracking-[0.2em] text-white/30 sm:tracking-[0.25em]">
-                  DSA • Education
-                </p>
-
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                  DSA Visualizer
-                </h3>
-
-                <p className="mt-4 leading-7 text-white/45">
-                  An interactive platform that visualizes data structures and
-                  algorithms, helping students understand complex concepts
-                  through visual interaction.
-                </p>
-
-                <div className="mt-7 flex flex-wrap gap-2">
-                  {["React", "TypeScript", "Algorithms", "UI/UX"].map(
-                    (tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1.5 text-xs text-white/45 transition hover:border-white/25 hover:text-white/70"
-                      >
-                        {tech}
-                      </span>
-                    )
-                  )}
-                </div>
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <a
-                    href="https://gutter-turtle-32541558.figma.site"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/button inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:scale-105"
-                  >
-                    Live Demo
-
-                    <ArrowUpRight
-                      size={16}
-                      className="transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5"
+              <div className="flex min-h-[380px] flex-col items-center justify-center sm:min-h-[440px]">
+                <motion.div
+                  animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
+                  transition={reduceMotion ? undefined : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
+                >
+                  <div className="absolute -inset-4 rounded-full border border-white/[0.06]" />
+                  <div className="relative h-48 w-48 overflow-hidden rounded-full border border-white/15 bg-white/[0.04] sm:h-56 sm:w-56">
+                    <Image
+                      src="/profile/Siddhesh.png"
+                      alt="Siddhesh Jadhav"
+                      fill
+                      sizes="224px"
+                      className="object-cover"
+                      priority
                     />
-                  </a>
+                  </div>
+                </motion.div>
 
-                  <a
-                    href="https://github.com/siddheshjadhav331-sys/dsa-visualizer"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm text-white/50 transition hover:border-white/30 hover:text-white"
-                  >
-                    GitHub
-                  </a>
-                </div>
-              </div>
-            </motion.article>
-
-            {/* PROJECT 02 */}
-            <motion.article
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.7,
-                delay: 0.15,
-              }}
-              whileHover={{ y: -8 }}
-              className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] transition-all duration-500 hover:border-white/25 hover:bg-white/[0.04]"
-            >
-              {/* Preview */}
-              <div className="relative h-64 overflow-hidden sm:h-72 md:h-80">
-                <div
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                    backgroundSize: "35px 35px",
-                  }}
-                />
-
-                <div className="absolute right-1/2 top-1/2 h-64 w-64 translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.035] blur-[80px]" />
-
-                <div className="absolute left-5 top-5 z-10 sm:left-6 sm:top-6">
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white/40 backdrop-blur">
-                    02
-                  </span>
-                </div>
-
-                <div className="absolute right-5 top-5 z-10 sm:right-6 sm:top-6">
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white/40 backdrop-blur">
-                    ATS
-                  </span>
-                </div>
-
-                <div className="absolute inset-0">
-                  <Image
-                    src="/projects/ats_resumeanalyzer.png"
-                    alt="ATS Resume Analyzer"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
-                  />
-
-                  <div className="absolute inset-0 bg-black/40 transition group-hover:bg-black/20" />
-                </div>
-
-                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between sm:bottom-6 sm:left-6 sm:right-6">
-                  <span className="text-[10px] uppercase tracking-[0.15em] text-white/25 sm:text-xs sm:tracking-[0.2em]">
-                    Resume Intelligence
-                  </span>
-
-                  <span className="text-xs text-white/20">
-                    ATS Score
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6 sm:p-8">
-                <p className="text-xs uppercase tracking-[0.2em] text-white/30 sm:tracking-[0.25em]">
-                  ATS Check • Career
-                </p>
-
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                  ATS Resume Analyzer
-                </h3>
-
-                <p className="mt-4 leading-7 text-white/45">
-                  A resume analysis tool that evaluates resume content,
-                  identifies potential improvements, and provides an
-                  ATS-focused score to help users create more recruiter-friendly
-                  resumes.
-                </p>
-
-                <div className="mt-7 flex flex-wrap gap-2">
-                  {["React", "Django", "NLP", "UI/UX"].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1.5 text-xs text-white/45 transition hover:border-white/25 hover:text-white/70"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <a
-                    href="https://ats-resume-analyzer-6ztl.onrender.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/button inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:scale-105"
-                  >
-                    Live Demo
-
-                    <ArrowUpRight
-                      size={16}
-                      className="transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5"
-                    />
-                  </a>
-
-                  <a
-                    href="https://github.com/siddheshjadhav331-sys/ATS_Resume-Analyzer"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm text-white/50 transition hover:border-white/30 hover:text-white"
-                  >
-                    GitHub
-                  </a>
-                </div>
-              </div>
-            </motion.article>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= ABOUT ================= */}
-
-      <section
-        id="about"
-        className="border-t border-white/10 bg-white/[0.02]"
-      >
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-white/30 sm:text-sm sm:tracking-[0.3em]">
-              About Me
-            </p>
-
-            <h2 className="mt-4 max-w-4xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-6xl">
-              I don&apos;t just want to
-              <span className="text-white/30"> write code.</span>
-              <br />
-              I want to build things
-              <span className="text-white/30"> people can use.</span>
-            </h2>
-          </motion.div>
-
-          <div className="mt-14 grid gap-12 sm:mt-20 sm:gap-16 md:grid-cols-[1.2fr_0.8fr]">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-xl leading-9 text-white/60 sm:text-2xl">
-                I&apos;m a Computer Science student who enjoys turning ideas into
-                interactive and useful digital experiences.
-              </p>
-
-              <p className="mt-7 max-w-2xl text-base leading-7 text-white/40 sm:text-lg sm:leading-8">
-                My interests sit at the intersection of software development,
-                data structures and algorithms, and UI/UX design. I like
-                understanding how things work and then building them myself.
-              </p>
-
-              <p className="mt-6 max-w-2xl text-base leading-7 text-white/40 sm:text-lg sm:leading-8">
-                Through projects, I&apos;m continuously improving my problem-solving
-                skills while learning how to build products that are simple,
-                responsive, and enjoyable to use.
-              </p>
-
-              <div className="mt-10 grid grid-cols-2 gap-6 sm:mt-12 sm:grid-cols-3">
-                <div className="border-l border-white/10 pl-5">
-                  <p className="text-3xl font-bold">2+</p>
-                  <p className="mt-1 text-sm text-white/35">
-                    Projects Built
+                <div className="mt-7 text-center">
+                  <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                    Siddhesh Jadhav
+                  </h2>
+                  <p className="mt-2 text-sm text-white/45">
+                    Software Development · DSA · UI/UX
                   </p>
                 </div>
 
-                <div className="border-l border-white/10 pl-5">
-                  <p className="text-3xl font-bold">3+</p>
-                  <p className="mt-1 text-sm text-white/35">
-                    Core Areas
-                  </p>
-                </div>
-
-                <div className="col-span-2 border-l border-white/10 pl-5 sm:col-span-1">
-                  <p className="text-3xl font-bold">∞</p>
-                  <p className="mt-1 text-sm text-white/35">
-                    Things to Learn
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-7">
-                <div className="flex h-44 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.02] sm:h-48">
-                  <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    className="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-3xl font-bold"
-                  >
-                    SJ
-                  </motion.div>
-                </div>
-
-                <div className="mt-7">
-                  <p className="text-xs uppercase tracking-[0.25em] text-white/30">
-                    Currently
-                  </p>
-
-                  <h3 className="mt-3 text-xl font-semibold">
-                    Learning. Building. Improving.
-                  </h3>
-
-                  <p className="mt-3 leading-7 text-white/40">
-                    Exploring modern web development while strengthening my
-                    foundations in computer science.
-                  </p>
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-2">
-                  {[
-                    "Software Development",
-                    "DSA",
-                    "UI/UX",
-                    "Problem Solving",
-                  ].map((item) => (
+                <div className="mt-7 flex flex-wrap justify-center gap-2">
+                  {["React", "Next.js", "TypeScript", "Python", "C++"].map((item) => (
                     <span
                       key={item}
-                      className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/50"
+                      className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-xs text-white/45"
                     >
                       {item}
                     </span>
                   ))}
                 </div>
               </div>
-            </motion.div>
-          </div>
-
-          {/* Journey */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-24 sm:mt-32"
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-white/30 sm:text-sm sm:tracking-[0.3em]">
-              My Journey
-            </p>
-
-            <h3 className="mt-4 text-2xl font-bold sm:text-3xl">
-              From learning to building.
-            </h3>
-
-            <div className="mt-10 border-t border-white/10 sm:mt-12">
-              <JourneyItem
-                number="01"
-                label="FOUNDATION"
-                title="Computer Science"
-                description="Building fundamentals in programming, data structures, algorithms, and core computer science concepts."
-              />
-
-              <JourneyItem
-                number="02"
-                label="BUILDING"
-                title="Real Projects"
-                description="Applying what I learn by building projects such as the DSA Visualizer and ATS Resume Analyzer."
-              />
-
-              <JourneyItem
-                number="03"
-                label="NEXT"
-                title="Becoming Better"
-                description="Deepening my development skills, solving harder problems, and creating better digital experiences."
-              />
             </div>
-          </motion.div>
+          </FadeIn>
         </div>
+
+        <a
+          href="#work"
+          className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-2 text-xs text-white/25 transition hover:text-white/60 sm:flex"
+        >
+          Scroll to explore
+          <ArrowDown size={14} aria-hidden="true" />
+        </a>
       </section>
 
-      {/* ================= SKILLS ================= */}
-
-      <section id="skills" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-white/30 sm:text-sm sm:tracking-[0.3em]">
-              Skills & Technologies
+      {/* Work */}
+      <section id="work" className="border-t border-white/8">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
+          <FadeIn>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/30">
+              Selected Work
             </p>
-
-            <h2 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              What I use
-              <span className="text-white/30"> to build.</span>
+            <h2 className="mt-4 max-w-3xl text-4xl font-bold tracking-[-0.035em] sm:text-5xl lg:text-6xl">
+              Projects built to
+              <span className="text-white/30"> solve real problems.</span>
             </h2>
-
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/40 sm:text-lg sm:leading-8">
-              A growing set of technologies and computer science concepts that
-              I use to build projects and solve problems.
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/45 sm:text-lg">
+              A focused selection of projects demonstrating software engineering,
+              computer science fundamentals, and practical product thinking.
             </p>
-          </motion.div>
+          </FadeIn>
 
-          <div className="mt-12 grid gap-6 sm:mt-16 md:grid-cols-2">
-            <SkillCategory
-              number="01"
-              title="Languages"
-              description="Languages I use for programming, problem solving, and application development."
-              skills={[
-                { name: "C" },
-                { name: "C++" },
-                { name: "Python" },
-                { name: "JavaScript" },
-                { name: "TypeScript" },
-              ]}
-            />
-
-            <SkillCategory
-              number="02"
-              title="Web Development"
-              description="Technologies I use to build modern, responsive, and interactive web applications."
-              skills={[
-                { name: "HTML" },
-                { name: "CSS" },
-                { name: "React" },
-                { name: "Next.js" },
-                { name: "Tailwind CSS" },
-              ]}
-            />
-
-            <SkillCategory
-              number="03"
-              title="CS Fundamentals"
-              description="Core computer science concepts that form my technical foundation."
-              skills={[
-                { name: "Data Structures" },
-                { name: "Algorithms" },
-                { name: "OOP" },
-                { name: "DBMS" },
-                { name: "Operating Systems" },
-              ]}
-            />
-
-            <SkillCategory
-              number="04"
-              title="Tools & Design"
-              description="Tools and design principles I use to build, prototype, and manage projects."
-              skills={[
-                { name: "Figma" },
-                { name: "UI/UX" },
-                { name: "Git" },
-                { name: "GitHub" },
-                { name: "VS Code" },
-              ]}
-            />
+          <div className="mt-12 space-y-7 sm:mt-16">
+            {projects.map((project, index) => (
+              <ProjectCard key={project.title} project={project} index={index} />
+            ))}
           </div>
-
-          {/* Currently Learning */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02]"
-          >
-            <div className="flex flex-col gap-8 p-6 sm:p-9">
-              <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-white/30">
-                  Currently Learning
-                </p>
-
-                <h3 className="mt-3 text-2xl font-semibold">
-                  Always improving.
-                </h3>
-
-                <p className="mt-3 max-w-xl leading-7 text-white/40">
-                  I&apos;m continuously expanding my technical skills and exploring
-                  technologies that help me build better products.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                {[
-                  "Advanced React",
-                  "Next.js",
-                  "Node.js",
-                  "REST APIs",
-                  "System Design",
-                  "Git & GitHub",
-                ].map((skill, index) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.3,
-                      delay: index * 0.05,
-                    }}
-                    whileHover={{ y: -3 }}
-                    className="cursor-default rounded-full border border-white/10 px-3 py-2 text-sm text-white/50 transition hover:border-white/30 hover:bg-white/[0.05] hover:text-white"
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Approach */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="mt-16 border-t border-white/10 pt-8"
-          >
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <p className="text-sm text-white/30">
-                My approach
-              </p>
-
-              <p className="max-w-2xl text-left text-base leading-7 text-white/50 sm:text-lg md:text-right">
-                Learn the fundamentals → build real projects → understand meaningful problems → refine the solution.
-              </p>
-            </div>
-          </motion.div>
         </div>
       </section>
 
-      {/* ================= RESUME ================= */}
+      {/* What I build */}
+      <section className="border-t border-white/8 bg-white/[0.015]">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
+          <FadeIn>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/30">
+              What I Build
+            </p>
+            <h2 className="mt-4 max-w-3xl text-4xl font-bold tracking-[-0.035em] sm:text-5xl">
+              Engineering with purpose.
+            </h2>
+          </FadeIn>
 
-      <section id="resume" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid gap-12 md:grid-cols-[1fr_0.8fr] md:items-center"
-          >
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-white/30 sm:text-sm sm:tracking-[0.3em]">
-                Resume
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {[
+              ["01", "Full-Stack Applications", "Responsive applications with clean interfaces, APIs, and practical architecture."],
+              ["02", "Interactive Experiences", "Interfaces that turn complex information into clear, usable experiences."],
+              ["03", "Problem Solving", "Applying DSA and core CS concepts to design efficient, maintainable solutions."],
+            ].map(([number, title, description], index) => (
+              <FadeIn key={title} delay={index * 0.06}>
+                <div className="h-full rounded-3xl border border-white/10 bg-white/[0.02] p-6 sm:p-7">
+                  <span className="text-xs text-white/25">{number}</span>
+                  <h3 className="mt-8 text-xl font-semibold">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-white/40">
+                    {description}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills */}
+      <section id="skills" className="border-t border-white/8">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
+          <FadeIn>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/30">
+              Technical Skills
+            </p>
+            <h2 className="mt-4 text-4xl font-bold tracking-[-0.035em] sm:text-5xl">
+              Tools I use to build.
+            </h2>
+          </FadeIn>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {skillGroups.map((group, index) => (
+              <FadeIn key={group.title} delay={index * 0.04}>
+                <div className="h-full rounded-3xl border border-white/10 bg-white/[0.02] p-6">
+                  <h3 className="text-lg font-semibold">{group.title}</h3>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {group.items.map((skill) => (
+                      <span
+                        key={skill}
+                        className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-xs text-white/50"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn className="mt-8">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+              <p className="text-xs uppercase tracking-[0.22em] text-white/30">
+                Currently Learning
               </p>
+              <h3 className="mt-3 text-2xl font-semibold">
+                Strengthening my engineering depth.
+              </h3>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {["Node.js", "REST APIs", "System Design", "Backend Architecture", "Deployment"].map(
+                  (item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/50"
+                    >
+                      {item}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
-              <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                A little more
-                <span className="text-white/30">
-                  {" "}about my journey.
-                </span>
+      {/* About / Education */}
+      <section id="about" className="border-t border-white/8 bg-white/[0.015]">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
+          <div className="grid gap-12 lg:grid-cols-[1.15fr_.85fr] lg:gap-20">
+            <FadeIn>
+              <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/30">
+                About
+              </p>
+              <h2 className="mt-4 max-w-3xl text-4xl font-bold leading-tight tracking-[-0.035em] sm:text-5xl">
+                Curious about how systems work.
+                <span className="text-white/30"> Focused on building them well.</span>
               </h2>
 
-              <p className="mt-6 max-w-xl text-base leading-7 text-white/40 sm:text-lg sm:leading-8">
-                Want to know more about my education, skills, projects, and
-                experience? Take a look at my resume.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap">
-                <a
-                  href="/resume/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-105"
-                >
-                  View Resume
-
-                  <ArrowUpRight
-                    size={16}
-                    className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
-                </a>
-
-                <a
-                  href="/resume/resume.pdf"
-                  download
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm text-white/60 transition hover:border-white/30 hover:text-white"
-                >
-                  Download PDF
-                </a>
+              <div className="mt-8 max-w-2xl space-y-5 text-base leading-8 text-white/45 sm:text-lg">
+                <p>
+                  I&apos;m a Computer Science student focused on turning ideas into
+                  useful, reliable, and maintainable software.
+                </p>
+                <p>
+                  My interests sit at the intersection of software development,
+                  data structures and algorithms, and product-focused UI/UX. I
+                  enjoy understanding fundamentals, applying them in projects, and
+                  refining the engineering behind the result.
+                </p>
+                <p>
+                  I&apos;m continuously strengthening my engineering skills through hands-on
+                  projects, problem solving, and modern web technologies.
+                </p>
               </div>
-            </div>
+            </FadeIn>
 
-            {/* Resume Visual */}
-            <motion.a
-              href="/resume/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{
-                y: -8,
-                rotate: 1,
-              }}
-              transition={{ duration: 0.3 }}
-              className="group relative mx-auto block w-full max-w-xs sm:max-w-sm"
-            >
-              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-2xl">
-                <div className="aspect-[8.5/11] rounded-lg bg-[#111] p-6 sm:p-7">
-                  <div className="h-3 w-32 rounded bg-white/30" />
-                  <div className="mt-3 h-1.5 w-48 max-w-full rounded bg-white/10" />
+            <FadeIn delay={0.08}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+                <p className="text-xs uppercase tracking-[0.22em] text-white/30">
+                  Education
+                </p>
+                <h3 className="mt-4 text-2xl font-semibold">
+                  B.Tech · Computer Science & Engineering
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-white/40">
+                  Building a strong foundation in programming, data structures,
+                  algorithms, software engineering, and core computer science.
+                </p>
 
-                  <div className="mt-10 space-y-3">
-                    <div className="h-2 w-24 rounded bg-white/20" />
-                    <div className="h-1.5 w-full rounded bg-white/10" />
-                    <div className="h-1.5 w-11/12 rounded bg-white/10" />
-                    <div className="h-1.5 w-4/5 rounded bg-white/10" />
-                  </div>
-
-                  <div className="mt-10 space-y-3">
-                    <div className="h-2 w-28 rounded bg-white/20" />
-                    <div className="h-1.5 w-full rounded bg-white/10" />
-                    <div className="h-1.5 w-10/12 rounded bg-white/10" />
-                    <div className="h-1.5 w-9/12 rounded bg-white/10" />
-                  </div>
-
-                  <div className="mt-10 space-y-3">
-                    <div className="h-2 w-20 rounded bg-white/20" />
-                    <div className="h-1.5 w-full rounded bg-white/10" />
-                    <div className="h-1.5 w-8/12 rounded bg-white/10" />
+                <div className="mt-8 border-t border-white/10 pt-7">
+                  <p className="text-xs uppercase tracking-[0.22em] text-white/30">
+                    Current Focus
+                  </p>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      "Data Structures & Algorithms",
+                      "Full-Stack Development",
+                      "Problem Solving",
+                      "Software Engineering",
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className="flex items-center gap-3 text-sm text-white/55"
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-white/45" />
+                        {item}
+                      </div>
+                    ))}
                   </div>
                 </div>
-
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition duration-300 group-hover:bg-black/40">
-                  <span className="rounded-full border border-white/20 bg-black/60 px-5 py-2 text-sm text-white/0 backdrop-blur transition group-hover:text-white">
-                    Open Resume
-                  </span>
-                </div>
               </div>
-            </motion.a>
-          </motion.div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* ================= CONTACT ================= */}
+      {/* Resume */}
+      <section id="resume" className="border-t border-white/8">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
+          <FadeIn>
+            <div className="grid items-center gap-10 rounded-[2rem] border border-white/10 bg-white/[0.025] p-7 sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/30">
+                  Resume
+                </p>
+                <h2 className="mt-4 max-w-2xl text-4xl font-bold tracking-[-0.035em] sm:text-5xl">
+                  The complete picture.
+                </h2>
+                <p className="mt-5 max-w-xl text-base leading-7 text-white/45">
+                  Education, technical skills, projects, and experience in one
+                  concise document.
+                </p>
 
-      <section id="contact" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-[2rem] border border-white/10 bg-white/[0.03] px-5 py-16 text-center sm:px-8 sm:py-20 md:px-20"
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-white/30 sm:text-sm sm:tracking-[0.3em]">
-              Get In Touch
-            </p>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href="/resume/resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+                  >
+                    View Resume
+                    <ExternalLink size={15} aria-hidden="true" />
+                  </a>
+                  <a
+                    href="/resume/resume.pdf"
+                    download
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/12 px-6 py-3 text-sm text-white/70 transition hover:border-white/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+                  >
+                    Download PDF
+                    <Download size={15} aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
 
-            <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl">
-              Let&apos;s build something
-              <br />
-              <span className="text-white/30">
-                meaningful.
-              </span>
-            </h2>
+              <div className="hidden w-48 rotate-2 rounded-2xl border border-white/10 bg-[#111] p-4 shadow-2xl sm:block">
+                <div className="aspect-[8.5/11] rounded-lg border border-white/5 bg-[#0b0b0b] p-4">
+                  <div className="h-2.5 w-20 rounded bg-white/25" />
+                  <div className="mt-3 h-1 w-28 rounded bg-white/10" />
+                  <div className="mt-8 space-y-2">
+                    <div className="h-1 w-full rounded bg-white/10" />
+                    <div className="h-1 w-11/12 rounded bg-white/10" />
+                    <div className="h-1 w-4/5 rounded bg-white/10" />
+                  </div>
+                  <div className="mt-7 space-y-2">
+                    <div className="h-1.5 w-14 rounded bg-white/20" />
+                    <div className="h-1 w-full rounded bg-white/10" />
+                    <div className="h-1 w-10/12 rounded bg-white/10" />
+                  </div>
+                  <div className="mt-7 space-y-2">
+                    <div className="h-1.5 w-16 rounded bg-white/20" />
+                    <div className="h-1 w-full rounded bg-white/10" />
+                    <div className="h-1 w-9/12 rounded bg-white/10" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
-            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-white/40 sm:text-base">
-              Have an idea, opportunity, or just want to connect? Feel free to
-              reach out.
-            </p>
+      {/* Contact */}
+      <section id="contact" className="border-t border-white/8">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
+          <FadeIn>
+            <div className="rounded-[2rem] border border-white/10 bg-white/[0.025] px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-20">
+              <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/30">
+                Get In Touch
+              </p>
 
-            <a
-              href="mailto:siddheshjadhav331@gmail.com"
-              className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 font-medium text-black transition hover:scale-105"
-            >
-              Send Me an Email
-              <ArrowUpRight size={18} />
-            </a>
+              <h2 className="mx-auto mt-5 max-w-4xl text-4xl font-bold tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+                Open to software engineering
+                <span className="text-white/30"> opportunities.</span>
+              </h2>
 
-            <div className="mt-8 flex items-center justify-center gap-3">
-              <a
-                href="https://github.com/siddheshjadhav331-sys"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-white/50 transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white hover:text-black"
-              >
-                <FaGithub
-                  size={20}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                />
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/siddhesh-jadhav-b6a6a13b0/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-white/50 transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white hover:text-black"
-              >
-                <FaLinkedinIn
-                  size={20}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                />
-              </a>
+              <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-white/45 sm:text-base">
+                Seeking software engineering internships and opportunities to build
+                reliable, real-world software while learning from strong engineering teams.
+              </p>
 
               <a
                 href="mailto:siddheshjadhav331@gmail.com"
-                aria-label="Email"
-                className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-white/50 transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white hover:text-black"
+                className="mt-9 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
               >
-                <Mail
-                  size={20}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                />
+                Email Me
+                <Mail size={16} aria-hidden="true" />
               </a>
+
+              <div className="mt-8 flex justify-center gap-3">
+                <a
+                  href="https://github.com/siddheshjadhav331-sys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/55 transition hover:border-white/30 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+                >
+                  <FaGithub size={18} aria-hidden="true" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/siddhesh-jadhav-b6a6a13b0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/55 transition hover:border-white/30 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
+                >
+                  <FaLinkedin size={18} aria-hidden="true" />
+                </a>
+                <a
+                  href="mailto:siddheshjadhav331@gmail.com"
+                  aria-label="Email"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/55 transition hover:border-white hover:bg-white hover:text-black"
+                >
+                  <Mail size={18} />
+                </a>
+              </div>
             </div>
-          </motion.div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ================= FOOTER ================= */}
-
-      <footer className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-center text-sm text-white/30 sm:px-6 md:flex-row md:text-left">
-          <span className="font-semibold text-white/60">
-            SJ.
-          </span>
-
-          <span>
-            Designed & built with Next.js
-          </span>
-
-          <span>
-            © {new Date().getFullYear()} Siddhesh Jadhav. All Rights Reserved.
-          </span>
+      <footer className="border-t border-white/8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-center text-xs text-white/30 sm:px-6 md:flex-row md:items-center md:justify-between md:text-left">
+          <span className="font-semibold text-white/60">SJ.</span>
+          <span>Designed & built with Next.js.</span>
+          <span>© {new Date().getFullYear()} Siddhesh Jadhav.</span>
+          <a href="#home" className="rounded-sm transition hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+            Back to top ↑
+          </a>
         </div>
       </footer>
     </main>
-  );
-}
-
-/* =========================================================
-   SKILL CATEGORY
-========================================================= */
-
-function SkillCategory({
-  number,
-  title,
-  description,
-  skills,
-}: {
-  number: string;
-  title: string;
-  description: string;
-  skills: {
-    name: string;
-  }[];
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ y: -6 }}
-      className="group rounded-3xl border border-white/10 bg-white/[0.02] p-6 transition-colors hover:border-white/20 sm:p-7"
-    >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-xs text-white/25">
-            {number}
-          </p>
-
-          <h3 className="mt-3 text-2xl font-semibold">
-            {title}
-          </h3>
-        </div>
-
-        <span className="text-2xl text-white/10 transition group-hover:text-white/30">
-          +
-        </span>
-      </div>
-
-      <p className="mt-4 leading-7 text-white/40">
-        {description}
-      </p>
-
-      <div className="mt-7 flex flex-wrap gap-2">
-        {skills.map((skill) => (
-          <span
-            key={skill.name}
-            className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-white/45 transition hover:border-white/25 hover:bg-white/[0.08] hover:text-white/70"
-          >
-            {skill.name}
-          </span>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-/* =========================================================
-   JOURNEY ITEM
-========================================================= */
-
-function JourneyItem({
-  number,
-  label,
-  title,
-  description,
-}: {
-  number: string;
-  label: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <motion.div
-      whileHover={{ x: 6 }}
-      className="grid gap-4 border-b border-white/10 py-7 sm:py-8 md:grid-cols-[160px_1fr_auto] md:items-center"
-    >
-      <p className="text-sm text-white/30">
-        {label}
-      </p>
-
-      <div>
-        <h4 className="text-xl font-semibold">
-          {title}
-        </h4>
-
-        <p className="mt-2 text-sm leading-7 text-white/40 sm:text-base">
-          {description}
-        </p>
-      </div>
-
-      <span className="text-sm text-white/20">
-        {number}
-      </span>
-    </motion.div>
+    </>
   );
 }
