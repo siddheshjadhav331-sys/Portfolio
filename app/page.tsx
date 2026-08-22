@@ -277,7 +277,7 @@ export default function Home() {
             SJ<span className="text-white/35">.</span>
           </a>
 
-          <div className="hidden items-center gap-7 text-sm text-white/55 md:flex">
+          <div className="hidden items-center gap-7 text-sm font-semibold text-white md:flex">
             <a href="#work" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">Work</a>
             <a href="#skills" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">Skills</a>
             <a href="#about" className="rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">About</a>
@@ -308,7 +308,7 @@ export default function Home() {
                 key={item}
                 href={`#${item}`}
                 onClick={closeMenu}
-                className="block rounded-sm border-b border-white/8 py-4 text-sm capitalize text-white/75 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="block rounded-sm border-b border-white/8 py-4 text-sm font-semibold capitalize text-white transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 {item}
               </a>
