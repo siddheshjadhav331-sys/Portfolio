@@ -444,7 +444,6 @@ export default function Home() {
                 </div>
               </FadeIn>
 
-              <FadeIn delay={0.05}>
                 <h1
                   id="hero-title"
                   className="max-w-4xl text-[2.8rem] font-extrabold leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-[5.4rem]"
@@ -455,7 +454,6 @@ export default function Home() {
                     that solves problems.
                   </span>
                 </h1>
-              </FadeIn>
 
               <FadeIn delay={0.1}>
                 <p className="mt-7 max-w-2xl text-base font-medium leading-7 text-white/60 sm:text-lg sm:leading-8">
