@@ -478,7 +478,7 @@ export default function Home() {
                   </a>
 
                   <a
-                    href="/resume/resume.pdf"
+                    href="/resume/RESUME.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/40 hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
@@ -846,7 +846,7 @@ export default function Home() {
 
                   <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                     <a
-                      href="/resume/resume.pdf"
+                      href="/resume/RESUME.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-extrabold text-black transition hover:scale-[1.02] hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
@@ -856,7 +856,7 @@ export default function Home() {
                     </a>
 
                     <a
-                      href="/resume/resume.pdf"
+                      href="/resume/RESUME.pdf"
                       download
                       className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-bold text-white/75 transition hover:border-white/40 hover:bg-white/[0.04] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]"
                     >
